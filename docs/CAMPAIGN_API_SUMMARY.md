@@ -7,64 +7,73 @@ A Campaign Management API fornece funcionalidades completas para gerenciamento d
 ## Arquivos de Documentação Criados
 
 ### 1. Especificação OpenAPI
+
 - **Arquivo**: `docs/api-reference/campaign-management-openapi.json`
 - **Conteúdo**: Especificação completa da API em formato OpenAPI 3.1.0
-- **Inclui**: Schemas, endpoints, exemplos, códigos de erro
+- **Inclui**: Schemas, endpoints, exemplos, códigos de erro.
 
 ### 2. Documentação de Endpoints (MDX)
 
 #### Campaign Types
+
 - `docs/api-reference/endpoint/campaign-types-list.mdx` - GET /campaign/type
 - `docs/api-reference/endpoint/campaign-types-create.mdx` - POST /campaign/type
-- `docs/api-reference/endpoint/campaign-types-update.mdx` - PUT /campaign/type/{id}
+- `docs/api-reference/endpoint/campaign-types-update.mdx` - PUT /campaign/type/id
 - `docs/api-reference/endpoint/campaign-types-reorder.mdx` - PATCH /campaign/type-order
 
 #### Campaign Settings
+
 - `docs/api-reference/endpoint/campaign-settings-get.mdx` - GET /setup/campaign
 - `docs/api-reference/endpoint/campaign-settings-update.mdx` - POST /setup/campaign
 
 ### 3. Documentação Técnica
+
 - `docs/api-reference/campaign-management-introduction.mdx` - Introdução e guia de uso
 - `docs/CAMPAIGN_MANAGEMENT_API.md` - Documentação técnica completa
 - `docs/CAMPAIGN_API_SUMMARY.md` - Este resumo executivo
 
 ### 4. Configuração
+
 - `docs/docs.json` - Atualizado para incluir nova documentação na navegação
 
 ## Funcionalidades Documentadas
 
 ### 1. Gerenciamento de Tipos de Campanha
+
 - **Listagem**: Obter todos os tipos ordenados por prioridade
 - **Criação**: Adicionar novos tipos (automaticamente no final da lista)
 - **Atualização**: Modificar nomes de tipos existentes
 - **Reordenação**: Trocar posições entre tipos adjacentes
 
 ### 2. Configurações Globais
+
 - **Consulta**: Visualizar configurações atuais
 - **Atualização**: Modificar prioridades e permissões
 
 ### 3. Funcionalidade de Reordenação
 
 #### Regras de Negócio
+
 - **Subir**: Troca item atual com item imediatamente acima
 - **Descer**: Troca item atual com item imediatamente abaixo
 - **Refetch**: Atualização automática da lista após cada operação
 
 #### Comportamento da Interface
+
 - Loading states durante operações
 - Bloqueio de ações simultâneas
 - Validação de limites (primeiro/último item)
 
 ## Endpoints da API
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/campaign/type` | Lista tipos de campanha |
-| POST | `/campaign/type` | Cria novo tipo |
-| PUT | `/campaign/type/{id}` | Atualiza tipo existente |
-| PATCH | `/campaign/type-order` | Reordena tipos |
-| GET | `/setup/campaign` | Obtém configurações |
-| POST | `/setup/campaign` | Atualiza configurações |
+| Método | Endpoint               | Descrição               |
+| ------ | ---------------------- | ----------------------- |
+| GET    | `/campaign/type`       | Lista tipos de campanha |
+| POST   | `/campaign/type`       | Cria novo tipo          |
+| PUT    | `/campaign/type/{id}`  | Atualiza tipo existente |
+| PATCH  | `/campaign/type-order` | Reordena tipos          |
+| GET    | `/setup/campaign`      | Obtém configurações     |
+| POST   | `/setup/campaign`      | Atualiza configurações  |
 
 ## Códigos de Status HTTP
 
@@ -79,11 +88,13 @@ A Campaign Management API fornece funcionalidades completas para gerenciamento d
 ## Exemplos de Implementação
 
 ### JavaScript/React
+
 - Hook customizado para gerenciamento de estado
 - Componentes com loading states
 - Tratamento de erros robusto
 
 ### Estratégias de Retry
+
 - Exponential backoff para erros temporários
 - Validação de dados no frontend
 - Mensagens de erro amigáveis
@@ -91,6 +102,7 @@ A Campaign Management API fornece funcionalidades completas para gerenciamento d
 ## Casos de Teste Sugeridos
 
 ### Funcionalidade de Reordenação
+
 1. Mover item para cima
 2. Mover item para baixo
 3. Validar limites (primeiro/último)
@@ -98,6 +110,7 @@ A Campaign Management API fornece funcionalidades completas para gerenciamento d
 5. Verificar refetch automático
 
 ### Validações
+
 1. IDs inexistentes
 2. IDs iguais
 3. Falhas de rede
@@ -106,12 +119,14 @@ A Campaign Management API fornece funcionalidades completas para gerenciamento d
 ## Padrões de Qualidade
 
 ### Documentação
+
 - Especificação OpenAPI completa
 - Exemplos práticos de uso
 - Códigos de erro detalhados
 - Casos de teste documentados
 
 ### Código
+
 - Tratamento de erros robusto
 - Loading states apropriados
 - Validação de dados
