@@ -19,22 +19,22 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": ["api-reference/introduction"]
+            "pages": ["docs/api-reference/introduction"]
           },
           {
             "group": "Campaign Types",
             "pages": [
-              "api-reference/endpoint/campaign-types-list",
-              "api-reference/endpoint/campaign-types-create",
-              "api-reference/endpoint/campaign-types-update",
-              "api-reference/endpoint/campaign-types-reorder"
+              "docs/api-reference/endpoint/campaign-types-list",
+              "docs/api-reference/endpoint/campaign-types-create",
+              "docs/api-reference/endpoint/campaign-types-update",
+              "docs/api-reference/endpoint/campaign-types-reorder"
             ]
           },
           {
             "group": "Campaign Settings",
             "pages": [
-              "api-reference/endpoint/campaign-settings-get",
-              "api-reference/endpoint/campaign-settings-update"
+              "docs/api-reference/endpoint/campaign-settings-get",
+              "docs/api-reference/endpoint/campaign-settings-update"
             ]
           }
         ]
