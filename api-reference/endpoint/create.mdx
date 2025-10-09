@@ -1,0 +1,30 @@
+---
+title: "Produtos"
+description: "Endpoints para listar e consultar produtos cadastrados."
+---
+
+# Produtos
+
+Endpoints relacionados à listagem e consulta de produtos.
+
+---
+
+## `GET /api/v1/products`
+
+Lista produtos cadastrados com suporte a paginação e filtro por nome.
+
+### 🔍 Parâmetros de Query
+
+| Nome     | Tipo    | Obrigatório | Descrição                                   | Exemplo |
+| -------- | ------- | ----------- | ------------------------------------------- | ------- |
+| `page`   | integer | ❌           | Página atual (padrão: 1)                    | `1`     |
+| `size`   | integer | ❌           | Quantidade de itens por página (padrão: 20) | `20`    |
+| `search` | string  | ❌           | Filtro pelo nome do produto                 | `arroz` |
+
+---
+
+### ✅ Exemplo de Requisição
+
+```bash
+GET https://api.infoprice.co/api/v1/products?page=1&size=20&search=arroz
+```
