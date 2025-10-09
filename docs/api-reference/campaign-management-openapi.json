@@ -1,0 +1,578 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Campaign Management API",
+    "description": "API para gerenciamento de tipos de campanha e suas configurações, incluindo funcionalidades de reordenação",
+    "version": "1.0.0",
+    "contact": {
+      "name": "InfoPrice API Support",
+      "url": "https://ipa.infoprice.co"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://ipa.infoprice.co/ipa-app/api/ipa/v1",
+      "description": "Production server"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/campaign/type": {
+      "get": {
+        "summary": "Listar Tipos de Campanha",
+        "description": "Retorna todos os tipos de campanha ordenados por prioridade",
+        "operationId": "getCampaignTypes",
+        "tags": ["Campaign Types"],
+        "responses": {
+          "200": {
+            "description": "Lista de tipos de campanha retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CampaignType"
+                  }
+                },
+                "example": [
+                  {
+                    "id": "1",
+                    "nome": "Anúncio TV",
+                    "ordem": 1
+                  },
+                  {
+                    "id": "2",
+                    "nome": "Fim de semana",
+                    "ordem": 2
+                  },
+                  {
+                    "id": "3",
+                    "nome": "Promo quinzenal",
+                    "ordem": 3
+                  },
+                  {
+                    "id": "4",
+                    "nome": "Gôndola simples",
+                    "ordem": 4
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Tipo de Campanha",
+        "description": "Cria um novo tipo de campanha. O novo tipo será adicionado ao final da lista de ordenação",
+        "operationId": "createCampaignType",
+        "tags": ["Campaign Types"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCampaignTypeRequest"
+              },
+              "example": {
+                "name": "XPTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tipo de campanha criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignType"
+                },
+                "example": {
+                  "id": "1",
+                  "nome": "XPTO",
+                  "ordem": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/campaign/type/{id}": {
+      "put": {
+        "summary": "Atualizar Tipo de Campanha",
+        "description": "Atualiza o nome de um tipo de campanha existente. A ordem não é alterada",
+        "operationId": "updateCampaignType",
+        "tags": ["Campaign Types"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID único do tipo de campanha",
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCampaignTypeRequest"
+              },
+              "example": {
+                "name": "ABCD"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tipo de campanha atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignType"
+                },
+                "example": {
+                  "id": "1",
+                  "nome": "ABCD",
+                  "ordem": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/campaign/type-order": {
+      "patch": {
+        "summary": "Reordenar Tipos de Campanha",
+        "description": "Troca a ordem entre dois tipos de campanha. Esta operação é utilizada pelos botões 'subir' e 'descer' na interface, onde são enviados os IDs do item atual e do item adjacente",
+        "operationId": "reorderCampaignTypes",
+        "tags": ["Campaign Types"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderCampaignTypesRequest"
+              },
+              "example": {
+                "firstId": "1",
+                "secondId": "2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reordenação realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReorderSuccessResponse"
+                },
+                "example": {
+                  "message": "Campaign types reordered successfully",
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/setup/campaign": {
+      "get": {
+        "summary": "Obter Configurações de Campanha",
+        "description": "Retorna as configurações globais para campanhas, incluindo prioridade e permissão de edição de ofertas",
+        "operationId": "getCampaignSettings",
+        "tags": ["Campaign Settings"],
+        "responses": {
+          "200": {
+            "description": "Configurações de campanha retornadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignSettings"
+                },
+                "example": {
+                  "priority": "PRIORITY_TYPE",
+                  "editOffer": true
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Atualizar Configurações de Campanha",
+        "description": "Atualiza as configurações globais para campanhas",
+        "operationId": "updateCampaignSettings",
+        "tags": ["Campaign Settings"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCampaignSettingsRequest"
+              },
+              "example": {
+                "priority": "PRIORITY_TYPE",
+                "editOffer": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Configurações atualizadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampaignSettings"
+                },
+                "example": {
+                  "priority": "PRIORITY_TYPE",
+                  "editOffer": true
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CampaignType": {
+        "type": "object",
+        "required": ["id", "nome", "ordem"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identificador único do tipo de campanha",
+            "example": "1"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do tipo de campanha",
+            "example": "Anúncio TV"
+          },
+          "ordem": {
+            "type": "integer",
+            "description": "Posição na ordenação (1 = primeira posição)",
+            "minimum": 1,
+            "example": 1
+          }
+        }
+      },
+      "CreateCampaignTypeRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do novo tipo de campanha",
+            "minLength": 1,
+            "maxLength": 100,
+            "example": "XPTO"
+          }
+        }
+      },
+      "UpdateCampaignTypeRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Novo nome do tipo de campanha",
+            "minLength": 1,
+            "maxLength": 100,
+            "example": "ABCD"
+          }
+        }
+      },
+      "ReorderCampaignTypesRequest": {
+        "type": "object",
+        "required": ["firstId", "secondId"],
+        "properties": {
+          "firstId": {
+            "type": "string",
+            "description": "ID do primeiro tipo de campanha a ser trocado",
+            "example": "1"
+          },
+          "secondId": {
+            "type": "string",
+            "description": "ID do segundo tipo de campanha a ser trocado",
+            "example": "2"
+          }
+        }
+      },
+      "ReorderSuccessResponse": {
+        "type": "object",
+        "required": ["message", "success"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Mensagem de sucesso",
+            "example": "Campaign types reordered successfully"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Indica se a operação foi bem-sucedida",
+            "example": true
+          }
+        }
+      },
+      "CampaignSettings": {
+        "type": "object",
+        "required": ["priority", "editOffer"],
+        "properties": {
+          "priority": {
+            "type": "string",
+            "enum": ["PRIORITY_TYPE", "PRICE_LOWER"],
+            "description": "Tipo de prioridade para campanhas",
+            "example": "PRIORITY_TYPE"
+          },
+          "editOffer": {
+            "type": "boolean",
+            "description": "Indica se é permitido editar ofertas",
+            "example": true
+          }
+        }
+      },
+      "UpdateCampaignSettingsRequest": {
+        "type": "object",
+        "required": ["priority", "editOffer"],
+        "properties": {
+          "priority": {
+            "type": "string",
+            "enum": ["PRIORITY_TYPE", "PRICE_LOWER"],
+            "description": "Tipo de prioridade para campanhas",
+            "example": "PRIORITY_TYPE"
+          },
+          "editOffer": {
+            "type": "boolean",
+            "description": "Indica se é permitido editar ofertas",
+            "example": true
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error", "message"],
+        "properties": {
+          "error": {
+            "type": "integer",
+            "description": "Código do erro HTTP",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensagem descritiva do erro",
+            "example": "Invalid request parameters"
+          },
+          "details": {
+            "type": "object",
+            "description": "Detalhes adicionais sobre o erro (opcional)",
+            "additionalProperties": true
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "required": ["error", "message", "validationErrors"],
+        "properties": {
+          "error": {
+            "type": "integer",
+            "description": "Código do erro HTTP",
+            "example": 422
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensagem descritiva do erro",
+            "example": "Validation failed"
+          },
+          "validationErrors": {
+            "type": "array",
+            "description": "Lista de erros de validação",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "Campo que falhou na validação"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Mensagem de erro específica do campo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Requisição inválida",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": 400,
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Token de autenticação inválido ou ausente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": 401,
+              "message": "Unauthorized access"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Recurso não encontrado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": 404,
+              "message": "Campaign type not found"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Erro de validação dos dados enviados",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "example": {
+              "error": 422,
+              "message": "Validation failed",
+              "validationErrors": [
+                {
+                  "field": "name",
+                  "message": "Name is required and cannot be empty"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Erro interno do servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": 500,
+              "message": "Internal server error"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Token de autenticação Bearer JWT"
+      }
+    }
+  }
+}

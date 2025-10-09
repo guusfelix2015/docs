@@ -1,0 +1,12 @@
+---
+title: "Reordenar Tipos de Campanha"
+openapi: "PATCH /campaign/type-order"
+---
+
+Troca a posição entre dois tipos de campanha. Utilizado pelos botões "subir" e "descer" na interface.
+
+## Regras de Negócio
+
+- **Subir**: Enviar ID do item atual + ID do item acima
+- **Descer**: Enviar ID do item atual + ID do item abaixo
+- Após reordenação, fazer refetch automático da lista
